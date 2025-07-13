@@ -10,7 +10,7 @@ class App extends Component {
 
   updateResponseData = (data: object) => {
     this.setState({ responseData: data });
-  };
+  }
 
   render(): ReactNode {
     return (
