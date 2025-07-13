@@ -1,24 +1,23 @@
-import './App.css'
+import './App.css';
 import { Component, type ReactNode } from 'react';
-import Controls from './Controls'
-
+import Controls from './Controls';
 
 class App extends Component {
-    state = {
-        responseData: null,
-    };
+  state = {
+    responseData: null,
+  };
 
-    updateResponseData(data: object) {
-      this.setState({ responseData: data })
-    }
+  updateResponseData(data: object) {
+    this.setState({ responseData: data });
+  }
 
-    render(): ReactNode {
-      return (
-        <>
-          <Controls onSearchResponse={this.updateResponseData}/>
-        </>
-      )
-    }
+  render(): ReactNode {
+    return (
+      <>
+        <Controls onSearchResponse={this.updateResponseData} />
+      </>
+    );
+  }
 }
 
-export default App
+export default App;
