@@ -5,7 +5,7 @@ import Results from './Results';
 
 class App extends Component {
   state = {
-    responseData: null,
+    responseData: {},
   };
 
   updateResponseData = (data: object) => {
@@ -16,7 +16,7 @@ class App extends Component {
     return (
       <>
         <Controls onSearchResponse={this.updateResponseData} />
-        <Results fetchedData={this.state.responseData ? this.state.responseData : {}}></Results>
+        <Results fetchedData={this.state.responseData}></Results>
       </>
     );
   }

@@ -1,5 +1,4 @@
 import { Component } from 'react';
-
 class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
   state = {
     searchValue: '',
