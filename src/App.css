@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.pokemon-item {
+  display: flex;
+  gap: 40px;
+}
