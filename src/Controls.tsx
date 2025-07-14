@@ -1,7 +1,9 @@
 import { Component } from 'react';
+import spinner from './assets/Loading_icon.gif';
 class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
   state = {
     searchValue: '',
+    isLoading: false,
   };
 
   async getData(request: string): Promise<object | null> {
@@ -10,17 +12,22 @@ class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
         `https://pokeapi.co/api/v2/pokemon/${request}`
       );
 
+      this.setState({ isLoading: true });
+
       if (response.ok) {
         const data = await response.json();
         console.log(data);
         this.props.onSearchResponse(data);
+        this.setState({ isLoading: false });
         return data;
       } else {
         console.log(response.status);
+        this.setState({ isLoading: false });
         return null;
       }
     } catch (err) {
       console.log(err);
+      this.setState({ isLoading: false });
       return null;
     }
   }
@@ -53,9 +60,13 @@ class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
             type="text"
             onChange={this.handleSearchInput}
           />
-          <button className="search-button" onClick={this.handleSearchButton}>
-            Search Button
-          </button>
+          {this.state.isLoading ? (
+            <img src={spinner} alt="" />
+          ) : (
+            <button className="search-button" onClick={this.handleSearchButton}>
+              Search Button
+            </button>
+          )}
         </div>
       </>
     );
