@@ -47,8 +47,17 @@ class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
   handleSearchButton = () => {
     if (this.state.searchValue || this.state.searchValue == '') {
       this.getData(this.state.searchValue);
+      localStorage.setItem('searchTerm', this.state.searchValue);
     }
   };
+
+  componentDidMount() {
+    const searchTerm = localStorage.getItem('searchTerm');
+
+    if (searchTerm || searchTerm === '') {
+      this.getData(searchTerm);
+    }
+  }
 
   render() {
     return (
