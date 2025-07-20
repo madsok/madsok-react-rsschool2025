@@ -2,9 +2,9 @@ import './App.css';
 import { Component, type ReactNode } from 'react';
 import Controls from './components/Controls';
 import Results from './components/Results';
-import type I_PokemonData from './interfaces/I_PokemonData';
+import ErrorButton from './components/ErrorButton';
 
-class App extends Component<I_PokemonData | null> {
+class App extends Component<object> {
   state = {
     responseData: null,
   };
@@ -16,6 +16,7 @@ class App extends Component<I_PokemonData | null> {
   render(): ReactNode {
     return (
       <>
+        <ErrorButton />
         <Controls onSearchResponse={this.updateResponseData} />
         {this.state.responseData && (
           <Results fetchedData={this.state.responseData} />
