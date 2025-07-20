@@ -1,7 +1,7 @@
 import './App.css';
 import { Component, type ReactNode } from 'react';
-import Controls from './Controls';
-import Results from './Results';
+import Controls from './components/Controls';
+import Results from './components/Results';
 
 class App extends Component {
   state = {

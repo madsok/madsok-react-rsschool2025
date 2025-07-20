@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import spinner from './assets/Loading_icon.gif';
+import spinner from './../assets/Loading_icon.gif';
 class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
   state = {
     searchValue: '',
@@ -37,7 +37,7 @@ class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
 
     if (target && target instanceof HTMLInputElement) {
       if (target.value) {
-        this.setState({ searchValue: target.value });
+        this.setState({ searchValue: target.value.trim() });
       } else {
         this.setState({ searchValue: '' });
       }
