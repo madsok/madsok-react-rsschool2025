@@ -2,10 +2,11 @@ import './App.css';
 import { Component, type ReactNode } from 'react';
 import Controls from './components/Controls';
 import Results from './components/Results';
+import type I_PokemonData from './interfaces/I_PokemonData';
 
-class App extends Component {
+class App extends Component<I_PokemonData | null> {
   state = {
-    responseData: {},
+    responseData: null,
   };
 
   updateResponseData = (data: object) => {
@@ -16,7 +17,9 @@ class App extends Component {
     return (
       <>
         <Controls onSearchResponse={this.updateResponseData} />
-        <Results fetchedData={this.state.responseData}></Results>
+        {this.state.responseData && (
+          <Results fetchedData={this.state.responseData} />
+        )}
       </>
     );
   }
