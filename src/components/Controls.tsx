@@ -47,12 +47,20 @@ class Controls extends Component<{ onSearchResponse: (data: object) => void }> {
   handleSearchButton = () => {
     if (this.state.searchValue || this.state.searchValue == '') {
       this.getData(this.state.searchValue);
-      localStorage.setItem('searchTerm', this.state.searchValue);
+      this.saveTermToLocalStorage('searchTerm', this.state.searchValue);
     }
   };
 
+  saveTermToLocalStorage = (key: string, value: string) => {
+    localStorage.setItem(key, value);
+  };
+
+  getTermFromLocalStorage = (key: string) => {
+    return localStorage.getItem(key);
+  };
+
   componentDidMount() {
-    const searchTerm = localStorage.getItem('searchTerm');
+    const searchTerm = this.getTermFromLocalStorage('searchTerm');
 
     if (searchTerm || searchTerm === '') {
       this.getData(searchTerm);
