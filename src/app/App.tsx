@@ -1,13 +1,13 @@
 import './App.css';
 import { useState } from 'react';
-import Controls from './components/Controls';
-import Results from './components/Results/Results';
-import ErrorButton from './components/ErrorButton';
-import type I_PokemonData from './interfaces/I_PokemonData';
-import sendRequest from './services/sendRequest';
+import Controls from '../components/Controls/Controls';
+import Results from '../components/Results/Results';
+import ErrorButton from '../components/ErrorButton/ErrorButton';
+import type I_PokemonData from '../interfaces/I_PokemonData';
+import sendRequest from '../services/sendRequest';
 import { Routes, Route, Link } from 'react-router-dom';
-import NotFound from './pages/NotFound/NotFound';
-import About from './pages/About/About';
+import NotFound from '../pages/NotFound/NotFound';
+import About from '../pages/About/About';
 
 function App() {
   const [responseData, setResponseData] = useState<null | I_PokemonData>(null);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import spinner from '../assets/Loading_icon.gif';
+import spinner from '../../assets/Loading_icon.gif';
 import { useSearchParams } from 'react-router-dom';
 
 interface ControlsProps {
@@ -64,6 +64,7 @@ function Controls({ onSearch }: ControlsProps) {
           type="text"
           onChange={handleSearchInput}
           value={searchValue}
+          placeholder="Enter term"
         />
         {isLoading ? (
           <img src={spinner} alt="" />
