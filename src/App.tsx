@@ -5,6 +5,8 @@ import Results from './components/Results/Results';
 import ErrorButton from './components/ErrorButton';
 import type I_PokemonData from './interfaces/I_PokemonData';
 import sendRequest from './services/sendRequest';
+import { Routes, Route } from 'react-router-dom';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const [responseData, setResponseData] = useState<null | I_PokemonData>(null);
@@ -24,17 +26,25 @@ function App() {
   }
 
   return (
-    <>
-      <ErrorButton />
-      <Controls onSearch={getData} />
-      {responseData && (
-        <Results
-          fetchedData={responseData}
-          totalItems={responseData.count}
-          onPageChange={handlePageChange}
-        />
-      )}
-    </>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <ErrorButton />
+            <Controls onSearch={getData} />
+            {responseData && (
+              <Results
+                fetchedData={responseData}
+                totalItems={responseData.count}
+                onPageChange={handlePageChange}
+              />
+            )}
+          </>
+        }
+      ></Route>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
