@@ -1,21 +1,19 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 
-class ErrorButton extends React.Component {
-  state = {
-    throwError: false,
-  };
+function ErrorButton() {
+  const [throwError, setThrowError] = useState<boolean>(false);
 
-  handleClick = () => {
-    this.setState({ throwError: true });
-  };
-
-  render() {
-    if (this.state.throwError) {
+  useEffect(() => {
+    if (throwError) {
       throw new Error('Throw ErrorBoundary!');
     }
+  }, [throwError]);
 
-    return <button onClick={this.handleClick}>ErrorBoundary</button>;
+  function handleClick() {
+    setThrowError(true);
   }
+
+  return <button onClick={handleClick}>ErrorBoundary</button>;
 }
 
 export default ErrorButton;

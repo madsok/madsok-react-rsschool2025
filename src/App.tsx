@@ -1,29 +1,20 @@
 import './App.css';
-import { Component, type ReactNode } from 'react';
+import { useState } from 'react';
 import Controls from './components/Controls';
 import Results from './components/Results';
 import ErrorButton from './components/ErrorButton';
+import type I_PokemonData from './interfaces/I_PokemonData';
 
-class App extends Component<object> {
-  state = {
-    responseData: null,
-  };
+function App() {
+  const [responseData, setResponseData] = useState<null | I_PokemonData>(null);
 
-  updateResponseData = (data: object) => {
-    this.setState({ responseData: data });
-  };
-
-  render(): ReactNode {
-    return (
-      <>
-        <ErrorButton />
-        <Controls onSearchResponse={this.updateResponseData} />
-        {this.state.responseData && (
-          <Results fetchedData={this.state.responseData} />
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      <ErrorButton />
+      <Controls onSearchResponse={setResponseData} />
+      {responseData && <Results fetchedData={responseData} />}
+    </>
+  );
 }
 
 export default App;
