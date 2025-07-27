@@ -5,8 +5,9 @@ import Results from './components/Results/Results';
 import ErrorButton from './components/ErrorButton';
 import type I_PokemonData from './interfaces/I_PokemonData';
 import sendRequest from './services/sendRequest';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import NotFound from './pages/NotFound/NotFound';
+import About from './pages/About/About';
 
 function App() {
   const [responseData, setResponseData] = useState<null | I_PokemonData>(null);
@@ -21,7 +22,7 @@ function App() {
   }
 
   function handlePageChange(pageNumber: number) {
-    const offset = (pageNumber - 1) * 20;
+    const offset = (pageNumber - 1) * 5;
     getData(searchValue, offset);
   }
 
@@ -32,6 +33,7 @@ function App() {
         element={
           <>
             <ErrorButton />
+            <Link to="/about">About page</Link>
             <Controls onSearch={getData} />
             {responseData && (
               <Results
@@ -43,6 +45,7 @@ function App() {
           </>
         }
       ></Route>
+      <Route path="/about" element={<About />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

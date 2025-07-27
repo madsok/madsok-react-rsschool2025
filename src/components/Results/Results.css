@@ -1,3 +1,14 @@
 .results {
   margin-bottom: 20px;
 }
+
+.results-wrapper {
+  display: flex;
+  gap: 40px;
+}
+
+.spinner {
+  display: block;
+  width: 300px;
+  height: 300px;
+}

@@ -1,10 +1,10 @@
 async function sendRequest<T>(
   request: string,
-  offset: number
+  offset?: number
 ): Promise<T | null> {
   try {
     const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${request}/?limit=20&offset=${offset}"`
+      `https://pokeapi.co/api/v2/pokemon/${request}/?limit=5&offset=${offset}"`
     );
 
     if (response.ok) {

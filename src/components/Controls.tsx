@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import spinner from './../assets/Loading_icon.gif';
+import spinner from '../assets/Loading_icon.gif';
 import { useSearchParams } from 'react-router-dom';
 
 interface ControlsProps {
@@ -37,6 +37,7 @@ function Controls({ onSearch }: ControlsProps) {
       onSearch(searchValue, 0);
       saveTermToLocalStorage('searchTerm', searchValue);
       setIsLoading(false);
+      setSearchValue('');
     }
 
     if (searchValue) {
@@ -62,6 +63,7 @@ function Controls({ onSearch }: ControlsProps) {
           className="search-field"
           type="text"
           onChange={handleSearchInput}
+          value={searchValue}
         />
         {isLoading ? (
           <img src={spinner} alt="" />
