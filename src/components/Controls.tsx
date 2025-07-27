@@ -1,47 +1,23 @@
 import { useState, useEffect } from 'react';
 import spinner from './../assets/Loading_icon.gif';
-import type I_PokemonData from '../interfaces/I_PokemonData';
+import { useSearchParams } from 'react-router-dom';
 
 interface ControlsProps {
-  onSearchResponse: (data: null | I_PokemonData) => void;
+  onSearch: (term: string, offset: number) => void;
 }
 
-function Controls({ onSearchResponse }: ControlsProps) {
+function Controls({ onSearch }: ControlsProps) {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const searchTerm = getTermFromLocalStorage('searchTerm');
-
-    if (searchTerm || searchTerm === '') {
-      getData(searchTerm);
+    if (searchTerm) {
+      setSearchValue(searchTerm);
+      onSearch(searchTerm, 0);
     }
   }, []);
-
-  async function getData(request: string): Promise<object | null> {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${request}`
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        onSearchResponse(data);
-        setIsLoading(false);
-        return data;
-      } else {
-        console.log(response.status);
-        setIsLoading(false);
-        return null;
-      }
-    } catch (err) {
-      console.log(err);
-      setIsLoading(false);
-      return null;
-    }
-  }
 
   function handleSearchInput(event: React.ChangeEvent) {
     const target = event.target;
@@ -57,8 +33,16 @@ function Controls({ onSearchResponse }: ControlsProps) {
 
   function handleSearchButton() {
     if (searchValue || searchValue == '') {
-      getData(searchValue);
+      setIsLoading(true);
+      onSearch(searchValue, 0);
       saveTermToLocalStorage('searchTerm', searchValue);
+      setIsLoading(false);
+    }
+
+    if (searchValue) {
+      setSearchParams({ q: searchValue, page: '1' });
+    } else {
+      setSearchParams({ page: '1' });
     }
   }
 
@@ -71,7 +55,7 @@ function Controls({ onSearchResponse }: ControlsProps) {
   }
 
   return (
-    <>
+    <div className="controls">
       <h2>Top controls</h2>
       <div className="controls-wrapper">
         <input
@@ -87,7 +71,7 @@ function Controls({ onSearchResponse }: ControlsProps) {
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

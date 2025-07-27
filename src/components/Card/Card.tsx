@@ -1,4 +1,5 @@
-import type I_PokemonItem from '../interfaces/I_PokemonItem';
+import type I_PokemonItem from '../../interfaces/I_PokemonItem';
+import './Card.css';
 
 interface CardProps {
   fetchedData: I_PokemonItem;
