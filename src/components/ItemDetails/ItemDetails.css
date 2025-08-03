@@ -1,4 +1,5 @@
 .details-item {
   display: flex;
   max-height: 300px;
+  gap: 20px;
 }

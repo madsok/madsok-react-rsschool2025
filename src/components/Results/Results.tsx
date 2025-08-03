@@ -40,9 +40,10 @@ function Results({ fetchedData, totalItems, onPageChange }: ResultsProps) {
           {results ? (
             results.map((item, index) => (
               <Card
-                key={index}
+                key={index + item.name}
                 fetchedData={item}
                 onClick={() => cardHandler(item.name)}
+                id={index + item.name}
               />
             ))
           ) : (
