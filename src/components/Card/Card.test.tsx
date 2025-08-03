@@ -12,5 +12,5 @@ test('render Card', () => {
     },
   };
 
-  render(<Card fetchedData={mockData} onClick={vi.fn()} />);
+  render(<Card fetchedData={mockData} onClick={vi.fn()} id={'id'} />);
 });
