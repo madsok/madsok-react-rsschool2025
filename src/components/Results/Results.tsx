@@ -8,6 +8,8 @@ import type I_PokemonItem from '../../interfaces/I_PokemonItem';
 import sendRequest from '../../services/sendRequest';
 import spinner from '../../assets/Loading_icon.gif';
 import { useSearchParams } from 'react-router-dom';
+import { useSelectedCardsStore } from '../../store/selectedCardsStore';
+import Flyout from '../Flyout/Flyout';
 
 interface ResultsProps {
   fetchedData: I_PokemonData;
@@ -21,6 +23,9 @@ function Results({ fetchedData, totalItems, onPageChange }: ResultsProps) {
   const [detailsData, setDetailsData] = useState<null | I_PokemonItem>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setSearchParams] = useSearchParams();
+  const selectedCardsTotal = useSelectedCardsStore(
+    (state) => state.selectedCards.length
+  );
 
   async function cardHandler(name: string) {
     setIsLoading(true);
@@ -77,6 +82,7 @@ function Results({ fetchedData, totalItems, onPageChange }: ResultsProps) {
       {totalItems && onPageChange && (
         <Pagination count={totalItems} onPageChange={onPageChange} />
       )}
+      {selectedCardsTotal > 0 && <Flyout />}
     </div>
   );
 }

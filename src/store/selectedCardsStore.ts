@@ -3,6 +3,7 @@ import { create } from 'zustand';
 interface SelectedCardsState {
   selectedCards: string[];
   toggleCard: (id: string) => void;
+  resetSelectedCards: () => void;
 }
 
 export const useSelectedCardsStore = create<SelectedCardsState>((set, get) => ({
@@ -19,5 +20,8 @@ export const useSelectedCardsStore = create<SelectedCardsState>((set, get) => ({
 
     set({ selectedCards: selectedCards });
     console.log('Selected Cards: ' + selectedCards);
+  },
+  resetSelectedCards: () => {
+    set({ selectedCards: [] });
   },
 }));
