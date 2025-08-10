@@ -41,6 +41,13 @@ function App() {
             <Controls onSearch={handleSearch} />
             {query.isLoading ? (
               <img src={spinner} alt="Loading..." />
+            ) : query.isError ? (
+              <p>
+                Data loading error:{' '}
+                {query.error instanceof Error
+                  ? query.error.message
+                  : 'Unknown error'}
+              </p>
             ) : (
               query.data && (
                 <Results

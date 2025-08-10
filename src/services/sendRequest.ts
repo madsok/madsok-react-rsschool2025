@@ -13,11 +13,11 @@ async function sendRequest<T>(
       return data;
     } else {
       console.log(response.status);
-      return null;
+      throw new Error(`${response.status}`);
     }
   } catch (err) {
     console.log(err);
-    return null;
+    throw err;
   }
 }
 
