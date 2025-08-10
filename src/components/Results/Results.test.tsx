@@ -2,6 +2,9 @@ import { render } from '@testing-library/react';
 import { test, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Results from './Results';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 test('render Results', () => {
   const mockFn = vi.fn();
@@ -24,12 +27,15 @@ test('render Results', () => {
   };
 
   render(
-    <MemoryRouter>
-      <Results
-        fetchedData={mockResponse}
-        totalItems={1}
-        onPageChange={mockFn}
-      />
-    </MemoryRouter>
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <Results
+          fetchedData={mockResponse}
+          totalItems={1}
+          onPageChange={mockFn}
+          currentPage={1}
+        />
+      </MemoryRouter>
+    </QueryClientProvider>
   );
 });
