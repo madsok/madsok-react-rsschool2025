@@ -10,6 +10,7 @@ import NotFound from '../pages/NotFound/NotFound';
 import About from '../pages/About/About';
 import { useQuery } from '@tanstack/react-query';
 import spinner from '../assets/Loading_icon.gif';
+import ClearCacheButton from '../components/ClearCacheButton/ClearCacheButton';
 
 function App() {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -36,6 +37,7 @@ function App() {
         path="/"
         element={
           <>
+            <ClearCacheButton />
             <ErrorButton />
             <Link to="/about">About page</Link>
             <Controls onSearch={handleSearch} />
