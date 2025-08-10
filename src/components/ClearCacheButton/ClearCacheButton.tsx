@@ -4,7 +4,7 @@ function ClearCacheButton() {
   const queryClient = useQueryClient();
 
   function handleClearCache() {
-    queryClient.removeQueries();
+    queryClient.removeQueries({ queryKey: ['dataRequest'] });
   }
 
   return <button onClick={handleClearCache}>Clear QueryCache</button>;

@@ -77,7 +77,7 @@ function Results({
             </li>
           )}
         </ul>
-        {query.isLoading ? (
+        {query.isLoading || (query.isFetching && !query.data) ? (
           <img className="spinner" src={spinner} alt="" />
         ) : query.isError ? (
           <p>

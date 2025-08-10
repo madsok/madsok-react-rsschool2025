@@ -41,7 +41,7 @@ function App() {
             <ErrorButton />
             <Link to="/about">About page</Link>
             <Controls onSearch={handleSearch} />
-            {query.isLoading ? (
+            {query.isLoading || (query.isFetching && !query.data) ? (
               <img src={spinner} alt="Loading..." />
             ) : query.isError ? (
               <p>
