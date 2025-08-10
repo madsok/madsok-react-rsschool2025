@@ -15,9 +15,15 @@ interface ResultsProps {
   fetchedData: I_PokemonData;
   totalItems: number;
   onPageChange?: (page: number) => void;
+  currentPage: number;
 }
 
-function Results({ fetchedData, totalItems, onPageChange }: ResultsProps) {
+function Results({
+  fetchedData,
+  totalItems,
+  onPageChange,
+  currentPage,
+}: ResultsProps) {
   const { results } = fetchedData;
   const [showDetails, setShowDetails] = useState(false);
   const [detailsData, setDetailsData] = useState<null | I_PokemonItem>(null);
@@ -80,7 +86,11 @@ function Results({ fetchedData, totalItems, onPageChange }: ResultsProps) {
         )}
       </div>
       {totalItems && onPageChange && (
-        <Pagination count={totalItems} onPageChange={onPageChange} />
+        <Pagination
+          count={totalItems}
+          onPageChange={onPageChange}
+          currentPage={currentPage}
+        />
       )}
       {selectedCardsTotal > 0 && <Flyout />}
     </div>
