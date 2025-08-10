@@ -10,6 +10,7 @@ import spinner from '../../assets/Loading_icon.gif';
 import { useSearchParams } from 'react-router-dom';
 import { useSelectedCardsStore } from '../../store/selectedCardsStore';
 import Flyout from '../Flyout/Flyout';
+import { useQuery } from '@tanstack/react-query';
 
 interface ResultsProps {
   fetchedData: I_PokemonData;
@@ -26,22 +27,25 @@ function Results({
 }: ResultsProps) {
   const { results } = fetchedData;
   const [showDetails, setShowDetails] = useState(false);
-  const [detailsData, setDetailsData] = useState<null | I_PokemonItem>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setSearchParams] = useSearchParams();
   const selectedCardsTotal = useSelectedCardsStore(
     (state) => state.selectedCards.length
   );
+  const [pokemonName, setPokemonName] = useState<string | null>(null);
+  const query = useQuery({
+    queryKey: ['dataRequest', pokemonName],
+    queryFn: () => {
+      if (pokemonName) {
+        return sendRequest<I_PokemonItem>(pokemonName);
+      }
+    },
+    enabled: !!pokemonName,
+  });
 
-  async function cardHandler(name: string) {
-    setIsLoading(true);
-    const data = await sendRequest<I_PokemonItem>(name);
-    if (data) {
-      setDetailsData(data);
-      setShowDetails(true);
-      setSearchParams({ q: data.name });
-    }
-    setIsLoading(false);
+  function cardHandler(name: string) {
+    setPokemonName(name);
+    setShowDetails(true);
+    setSearchParams({ q: name });
   }
   return (
     <div className="results-block">
@@ -73,13 +77,20 @@ function Results({
             </li>
           )}
         </ul>
-        {isLoading ? (
+        {query.isLoading ? (
           <img className="spinner" src={spinner} alt="" />
+        ) : query.isError ? (
+          <p>
+            Data loading error:{' '}
+            {query.error instanceof Error
+              ? query.error.message
+              : 'Unknown error'}
+          </p>
         ) : (
           showDetails &&
-          detailsData && (
+          query.data && (
             <ItemDetails
-              data={detailsData}
+              data={query.data}
               onItemDetailsClose={setShowDetails}
             />
           )
