@@ -1,6 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import spinner from '../../assets/Loading_icon.gif';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface ControlsProps {
   onSearch: (term: string, offset: number) => void;
@@ -9,7 +11,8 @@ interface ControlsProps {
 function Controls({ onSearch }: ControlsProps) {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const searchTerm = getTermFromLocalStorage('searchTerm');
@@ -41,9 +44,13 @@ function Controls({ onSearch }: ControlsProps) {
     }
 
     if (searchValue) {
-      setSearchParams({ q: searchValue, page: '1' });
+      router.push(
+        `${pathname}?${new URLSearchParams({ q: searchValue }).toString()}`
+      );
     } else {
-      setSearchParams({ page: '1' });
+      router.push(
+        `${pathname}?${new URLSearchParams({ page: '1' }).toString()}`
+      );
     }
   }
 

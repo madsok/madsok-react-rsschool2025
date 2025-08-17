@@ -1,6 +1,6 @@
 import './Pagination.css';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface PaginationProps {
   count: number;
@@ -11,7 +11,8 @@ interface PaginationProps {
 function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
   const totalPages = Math.ceil(count / 20);
   const [inputNumber, setInputNumber] = useState<string>('1');
-  const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     setInputNumber(String(currentPage));
@@ -21,14 +22,18 @@ function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
     if (currentPage === 1) return false;
     setInputNumber(String(currentPage - 1));
     onPageChange(currentPage - 1);
-    setSearchParams({ page: `${currentPage - 1}` });
+    router.push(
+      `${pathname}?${new URLSearchParams({ page: String(currentPage - 1) }).toString()}`
+    );
   }
 
   function nextButtonHandler() {
     if (currentPage >= totalPages) return false;
     setInputNumber(String(currentPage + 1));
     onPageChange(currentPage + 1);
-    setSearchParams({ page: `${currentPage + 1}` });
+    router.push(
+      `${pathname}?${new URLSearchParams({ page: String(currentPage + 1) }).toString()}`
+    );
   }
   function goToButtonHandler() {
     const pageNumber = parseInt(inputNumber, 10);
@@ -36,7 +41,9 @@ function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
     if (pageNumber < 1 || pageNumber > totalPages) return false;
     setInputNumber(String(pageNumber));
     onPageChange(pageNumber);
-    setSearchParams({ page: `${pageNumber}` });
+    router.push(
+      `${pathname}?${new URLSearchParams({ page: String(pageNumber) }).toString()}`
+    );
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {

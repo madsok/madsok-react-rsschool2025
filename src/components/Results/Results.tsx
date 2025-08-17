@@ -7,7 +7,7 @@ import ItemDetails from '../ItemDetails/ItemDetails';
 import type I_PokemonItem from '../../interfaces/I_PokemonItem';
 import sendRequest from '../../services/sendRequest';
 import spinner from '../../assets/Loading_icon.gif';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
 import { useSelectedCardsStore } from '../../store/selectedCardsStore';
 import Flyout from '../Flyout/Flyout';
 import { useQuery } from '@tanstack/react-query';
@@ -27,7 +27,8 @@ function Results({
 }: ResultsProps) {
   const { results } = fetchedData;
   const [showDetails, setShowDetails] = useState(false);
-  const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const selectedCardsTotal = useSelectedCardsStore(
     (state) => state.selectedCards.length
   );
@@ -45,7 +46,7 @@ function Results({
   function cardHandler(name: string) {
     setPokemonName(name);
     setShowDetails(true);
-    setSearchParams({ q: name });
+    router.push(`${pathname}?${new URLSearchParams({ q: name }).toString()}`);
   }
   return (
     <div className="results-block">
