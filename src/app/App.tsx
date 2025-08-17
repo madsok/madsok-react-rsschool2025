@@ -8,22 +8,27 @@ import sendRequest from '../services/sendRequest';
 import { Routes, Route, Link } from 'react-router-dom';
 import NotFound from '../pages/NotFound/NotFound';
 import About from '../pages/About/About';
+import { useQuery } from '@tanstack/react-query';
+import spinner from '../assets/Loading_icon.gif';
+import ClearCacheButton from '../components/ClearCacheButton/ClearCacheButton';
 
 function App() {
-  const [responseData, setResponseData] = useState<null | I_PokemonData>(null);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 5;
 
-  async function getData(searchReq: string, offset: number) {
-    const data = await sendRequest<I_PokemonData>(searchReq, offset);
-    if (data) {
-      setResponseData(data);
-      setSearchValue(searchReq);
-    }
-  }
+  const query = useQuery({
+    queryKey: ['dataRequest', searchValue, offset],
+    queryFn: () => sendRequest<I_PokemonData>(searchValue, offset),
+  });
 
   function handlePageChange(pageNumber: number) {
-    const offset = (pageNumber - 1) * 5;
-    getData(searchValue, offset);
+    setPage(pageNumber);
+  }
+
+  function handleSearch(value: string) {
+    setSearchValue(value);
+    setPage(1);
   }
 
   return (
@@ -32,15 +37,28 @@ function App() {
         path="/"
         element={
           <>
+            <ClearCacheButton />
             <ErrorButton />
             <Link to="/about">About page</Link>
-            <Controls onSearch={getData} />
-            {responseData && (
-              <Results
-                fetchedData={responseData}
-                totalItems={responseData.count}
-                onPageChange={handlePageChange}
-              />
+            <Controls onSearch={handleSearch} />
+            {query.isLoading || (query.isFetching && !query.data) ? (
+              <img src={spinner} alt="Loading..." />
+            ) : query.isError ? (
+              <p>
+                Data loading error:{' '}
+                {query.error instanceof Error
+                  ? query.error.message
+                  : 'Unknown error'}
+              </p>
+            ) : (
+              query.data && (
+                <Results
+                  fetchedData={query.data}
+                  totalItems={query.data.count}
+                  onPageChange={handlePageChange}
+                  currentPage={page}
+                />
+              )
             )}
           </>
         }

@@ -1,14 +1,19 @@
 import { render, fireEvent } from '@testing-library/react';
-import { test, vi } from 'vitest';
+import { test } from 'vitest';
 import Pagination from './Pagination';
 import { MemoryRouter } from 'react-router-dom';
+import { useState } from 'react';
+
+function App() {
+  const [page, setPage] = useState(1);
+
+  return <Pagination count={132} currentPage={page} onPageChange={setPage} />;
+}
 
 test('render Pagination', () => {
-  const mockFn = vi.fn();
-
   const { getByText, getByRole } = render(
     <MemoryRouter>
-      <Pagination count={132} onPageChange={mockFn} />
+      <App />
     </MemoryRouter>
   );
   const prevButton = getByText(/Previous/);
@@ -19,12 +24,12 @@ test('render Pagination', () => {
   expect(inputPage).toHaveValue(1);
 
   fireEvent.click(nextButton);
-  expect(mockFn).toHaveBeenCalledWith(2);
+  expect(inputPage).toHaveValue(2);
 
   fireEvent.click(prevButton);
-  expect(mockFn).toHaveBeenCalledWith(1);
+  expect(inputPage).toHaveValue(1);
 
   fireEvent.change(inputPage, { target: { value: '3' } });
   fireEvent.click(goToButton);
-  expect(mockFn).toHaveBeenCalledWith(3);
+  expect(inputPage).toHaveValue(3);
 });

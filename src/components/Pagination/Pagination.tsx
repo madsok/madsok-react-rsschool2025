@@ -1,38 +1,39 @@
 import './Pagination.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 interface PaginationProps {
   count: number;
   onPageChange: (page: number) => void;
+  currentPage: number;
 }
 
-function Pagination({ count, onPageChange }: PaginationProps) {
+function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
   const totalPages = Math.ceil(count / 20);
-  const [pageNumber, setPageNumber] = useState<number>(1);
   const [inputNumber, setInputNumber] = useState<string>('1');
   const [, setSearchParams] = useSearchParams();
 
+  useEffect(() => {
+    setInputNumber(String(currentPage));
+  }, [currentPage]);
+
   function prevButtonHandler() {
-    if (pageNumber === 1) return false;
-    setPageNumber(pageNumber - 1);
-    setInputNumber(String(pageNumber - 1));
-    onPageChange(pageNumber - 1);
-    setSearchParams({ page: `${pageNumber - 1}` });
+    if (currentPage === 1) return false;
+    setInputNumber(String(currentPage - 1));
+    onPageChange(currentPage - 1);
+    setSearchParams({ page: `${currentPage - 1}` });
   }
 
   function nextButtonHandler() {
-    if (pageNumber === totalPages - 1) return false;
-    setPageNumber(pageNumber + 1);
-    setInputNumber(String(pageNumber + 1));
-    onPageChange(pageNumber + 1);
-    setSearchParams({ page: `${pageNumber + 1}` });
+    if (currentPage >= totalPages) return false;
+    setInputNumber(String(currentPage + 1));
+    onPageChange(currentPage + 1);
+    setSearchParams({ page: `${currentPage + 1}` });
   }
   function goToButtonHandler() {
     const pageNumber = parseInt(inputNumber, 10);
 
     if (pageNumber < 1 || pageNumber > totalPages) return false;
-    setPageNumber(pageNumber);
     setInputNumber(String(pageNumber));
     onPageChange(pageNumber);
     setSearchParams({ page: `${pageNumber}` });
