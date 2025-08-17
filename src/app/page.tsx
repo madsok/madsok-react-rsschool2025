@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import spinner from '../assets/Loading_icon.gif';
 import ClearCacheButton from '../components/ClearCacheButton/ClearCacheButton';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function App() {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -38,7 +39,7 @@ function App() {
       <Link href="/about">About page</Link>
       <Controls onSearch={handleSearch} />
       {query.isLoading || (query.isFetching && !query.data) ? (
-        <img src={spinner} alt="Loading..." />
+        <Image src={spinner} alt="Loading..." width={300} height={300} />
       ) : query.isError ? (
         <p>
           Data loading error:{' '}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import spinner from '../../assets/Loading_icon.gif';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 interface ControlsProps {
   onSearch: (term: string, offset: number) => void;
@@ -74,7 +75,7 @@ function Controls({ onSearch }: ControlsProps) {
           placeholder="Enter term"
         />
         {isLoading ? (
-          <img src={spinner} alt="" />
+          <Image src={spinner} alt="Loading..." width={300} height={300} />
         ) : (
           <button className="search-button" onClick={handleSearchButton}>
             Search Button

@@ -11,6 +11,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useSelectedCardsStore } from '../../store/selectedCardsStore';
 import Flyout from '../Flyout/Flyout';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 
 interface ResultsProps {
   fetchedData: I_PokemonData;
@@ -79,7 +80,7 @@ function Results({
           )}
         </ul>
         {query.isLoading || (query.isFetching && !query.data) ? (
-          <img className="spinner" src={spinner} alt="" />
+          <Image src={spinner} alt="Loading..." width={300} height={300} />
         ) : query.isError ? (
           <p>
             Data loading error:{' '}
