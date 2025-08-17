@@ -5,6 +5,9 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: 'jsdom',
+    deps: {
+      inline: ['next-intl', 'next/navigation'],
+    },
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
@@ -16,6 +19,8 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/main.{js,jsx,ts,tsx}',
         'src/interfaces/',
+        'src/i18n/',
+        'src/middleware.ts',
       ],
       thresholds: {
         global: {

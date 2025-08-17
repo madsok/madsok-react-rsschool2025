@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import spinner from '../../assets/Loading_icon.gif';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 interface ControlsProps {
   onSearch: (term: string, offset: number) => void;
@@ -9,7 +11,9 @@ interface ControlsProps {
 function Controls({ onSearch }: ControlsProps) {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const t = useTranslations('Controls');
 
   useEffect(() => {
     const searchTerm = getTermFromLocalStorage('searchTerm');
@@ -41,9 +45,13 @@ function Controls({ onSearch }: ControlsProps) {
     }
 
     if (searchValue) {
-      setSearchParams({ q: searchValue, page: '1' });
+      router.push(
+        `${pathname}?${new URLSearchParams({ q: searchValue }).toString()}`
+      );
     } else {
-      setSearchParams({ page: '1' });
+      router.push(
+        `${pathname}?${new URLSearchParams({ page: '1' }).toString()}`
+      );
     }
   }
 
@@ -57,20 +65,20 @@ function Controls({ onSearch }: ControlsProps) {
 
   return (
     <div className="controls">
-      <h2>Top controls</h2>
+      <h2>{t('header')}</h2>
       <div className="controls-wrapper">
         <input
           className="search-field"
           type="text"
           onChange={handleSearchInput}
           value={searchValue}
-          placeholder="Enter term"
+          placeholder={t('placeholder')}
         />
         {isLoading ? (
-          <img src={spinner} alt="" />
+          <Image src={spinner} alt="Loading..." width={300} height={300} />
         ) : (
           <button className="search-button" onClick={handleSearchButton}>
-            Search Button
+            {t('search')}
           </button>
         )}
       </div>

@@ -1,10 +1,20 @@
 import { render } from '@testing-library/react';
 import { test, vi } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
 import Results from './Results';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextIntlClientProvider } from 'next-intl';
 
 const queryClient = new QueryClient();
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+  usePathname: () => '/test',
+}));
+
+const messages = {
+  Results: { value: 'test value' },
+  App: { value: 'test value' },
+};
 
 test('render Results', () => {
   const mockFn = vi.fn();
@@ -28,14 +38,14 @@ test('render Results', () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
+      <NextIntlClientProvider locale="en" messages={messages}>
         <Results
           fetchedData={mockResponse}
           totalItems={1}
           onPageChange={mockFn}
           currentPage={1}
         />
-      </MemoryRouter>
+      </NextIntlClientProvider>
     </QueryClientProvider>
   );
 });

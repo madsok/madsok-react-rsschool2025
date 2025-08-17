@@ -1,6 +1,9 @@
-import { render } from '@testing-library/react';
-import { test } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { test, vi } from 'vitest';
 import Card from '../Card/Card';
+import { NextIntlClientProvider } from 'next-intl';
+
+const messages = { Card: { name: 'Item name' } };
 
 test('render Card', () => {
   const mockData = {
@@ -12,5 +15,11 @@ test('render Card', () => {
     },
   };
 
-  render(<Card fetchedData={mockData} onClick={vi.fn()} id={'id'} />);
+  render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <Card fetchedData={mockData} onClick={vi.fn()} id="id" />
+    </NextIntlClientProvider>
+  );
+
+  expect(screen.getByText('ditto')).toBeInTheDocument();
 });

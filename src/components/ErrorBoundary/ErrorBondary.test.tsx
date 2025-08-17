@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { test } from 'vitest';
 import ErrorBoundary from './ErrorBoundary';
-import App from '../../app/App';
+import App from '../../app/[locale]/page';
 
 test('render ErrorBoundary', () => {
   render(

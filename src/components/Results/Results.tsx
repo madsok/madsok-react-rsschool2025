@@ -7,10 +7,12 @@ import ItemDetails from '../ItemDetails/ItemDetails';
 import type I_PokemonItem from '../../interfaces/I_PokemonItem';
 import sendRequest from '../../services/sendRequest';
 import spinner from '../../assets/Loading_icon.gif';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
 import { useSelectedCardsStore } from '../../store/selectedCardsStore';
 import Flyout from '../Flyout/Flyout';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 interface ResultsProps {
   fetchedData: I_PokemonData;
@@ -27,7 +29,10 @@ function Results({
 }: ResultsProps) {
   const { results } = fetchedData;
   const [showDetails, setShowDetails] = useState(false);
-  const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const tr = useTranslations('Results');
+  const t = useTranslations('App');
   const selectedCardsTotal = useSelectedCardsStore(
     (state) => state.selectedCards.length
   );
@@ -45,11 +50,11 @@ function Results({
   function cardHandler(name: string) {
     setPokemonName(name);
     setShowDetails(true);
-    setSearchParams({ q: name });
+    router.push(`${pathname}?${new URLSearchParams({ q: name }).toString()}`);
   }
   return (
     <div className="results-block">
-      <h2>Results</h2>
+      <h2>{tr('results')}</h2>
       <div className="results-wrapper">
         <ul className="results">
           {results ? (
@@ -67,21 +72,21 @@ function Results({
               onClick={() => cardHandler(fetchedData.name)}
             >
               <div>
-                <h3>Item name</h3>
+                <h3>{tr('itemName')}</h3>
                 <p>{fetchedData.name ?? ''}</p>
               </div>
               <div>
-                <h3>Item Description</h3>
+                <h3>{tr('itemDescription')}</h3>
                 <p>{fetchedData.location_area_encounters ?? ''}</p>
               </div>
             </li>
           )}
         </ul>
         {query.isLoading || (query.isFetching && !query.data) ? (
-          <img className="spinner" src={spinner} alt="" />
+          <Image src={spinner} alt={t('loading')} width={300} height={300} />
         ) : query.isError ? (
           <p>
-            Data loading error:{' '}
+            {t('dataError')}{' '}
             {query.error instanceof Error
               ? query.error.message
               : 'Unknown error'}

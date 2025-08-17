@@ -1,0 +1,51 @@
+{
+  "App": {
+    "about": "About",
+    "searchPlaceholder": "Search Pokémon...",
+    "loading": "Loading...",
+    "dataError": "Data loading error:"
+  },
+    "Controls": {
+    "header": "Top controls",
+    "search": "Search",
+    "placeholder": "Enter term"
+  },
+    "Results": {
+    "results": "Results",
+    "itemName": "Item Name",
+    "itemDescription": "Item Description"
+  },
+    "Card": {
+    "itemName": "Item Name",
+    "itemDescription": "Item Description"
+  },
+    "ClearCacheButton": {
+    "btnName": "Clear QueryCache"
+  },
+    "Pagination": {
+    "prev": "Previous",
+    "goTo": "Go to: ",
+    "next": "Next"
+  },
+    "Details": {
+    "closeBtn": "Close",
+    "itemName": "Item Name",
+    "itemSprite": "Item Sprite"
+  },
+    "Flyout": {
+    "selected": "items are selected",
+    "unselect": "Unselect all",
+    "download": "Download"
+  },
+    "Lang": {
+    "en": "EN",
+    "ru": "RU"
+  },
+    "About": {
+    "name": "Konstantin Tarasov",
+    "course": "RS School React course"
+  },
+    "NotFound": {
+    "text": "Page not found. 404"
+  }
+}

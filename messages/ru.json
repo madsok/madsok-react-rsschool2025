@@ -1,0 +1,51 @@
+{
+  "App": {
+    "about": "О приложении",
+    "searchPlaceholder": "Найти Покемона...",
+    "loading": "Загрузка...",
+    "dataError": "Ошибка загрузки данных:"
+  },
+    "Controls": {
+    "header": "Управление",
+    "search": "Найти",
+    "placeholder": "Введите запрос"
+  },
+    "Results": {
+    "results": "Результаты",
+    "itemName": "Название",
+    "itemDescription": "Описание"
+  },
+    "Card": {
+    "itemName": "Название",
+    "itemDescription": "Описание"
+  },
+    "ClearCacheButton": {
+    "btnName": "Очистить QueryCache"
+  },
+  "Pagination": {
+    "prev": "Назад",
+    "goTo": "Перейти к: ",
+    "next": "Вперед"
+  },
+    "Details": {
+    "closeBtn": "Закрыть",
+    "itemName": "Название",
+    "itemSprite": "Спрайт"
+  },
+    "Flyout": {
+    "selected": "выбрано элементов",
+    "unselect": "Очистить",
+    "download": "Скачать"
+  },
+    "Lang": {
+    "en": "Английский",
+    "ru": "Русский"
+  },
+    "About": {
+    "name": "Константин Тарасов",
+    "course": "Курс по Реакту от RS School"
+  },
+    "NotFound": {
+    "text": "Страница не найдена. 404"
+  }
+}
