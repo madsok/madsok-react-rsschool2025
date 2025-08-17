@@ -2,7 +2,6 @@ import { useSelectedCardsStore } from './selectedCardsStore';
 
 test('selectedCardsStore test', () => {
   useSelectedCardsStore.getState().resetSelectedCards();
-
   expect(useSelectedCardsStore.getState().selectedCards).toEqual([]);
 
   useSelectedCardsStore.getState().toggleCard('1ditto');

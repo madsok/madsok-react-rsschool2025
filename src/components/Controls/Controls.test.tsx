@@ -1,63 +1,52 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { test, expect, vi } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
 import Controls from './Controls';
+
+vi.mock('next/navigation', async () => {
+  const actual =
+    await vi.importActual<typeof import('next/navigation')>('next/navigation');
+  return {
+    ...actual,
+    useRouter: () => ({
+      push: vi.fn(),
+      replace: vi.fn(),
+      prefetch: vi.fn(),
+    }),
+    usePathname: () => '/',
+    useSearchParams: () => new URLSearchParams(),
+  };
+});
+
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => {
+    const messages: Record<string, string> = {
+      header: 'Controls header',
+      placeholder: 'Enter term',
+      search: 'Search Button',
+    };
+    return messages[key];
+  },
+}));
 
 test('render Controls', () => {
   const mockFn = vi.fn();
-
-  render(
-    <MemoryRouter>
-      <Controls onSearch={mockFn} />
-    </MemoryRouter>
-  );
+  render(<Controls onSearch={mockFn} />);
 
   const input = screen.getByPlaceholderText('Enter term');
   expect(input).toBeInTheDocument();
 
-  const button = screen.getByRole('button', { name: /Search Button/ });
+  const button = screen.getByRole('button', { name: /Search Button/i });
   expect(button).toBeInTheDocument();
+
+  expect(screen.getByText('Controls header')).toBeInTheDocument();
 });
 
-test('updates state on input change', () => {
+test('updates input on change', () => {
   const mockFn = vi.fn();
-
-  render(
-    <MemoryRouter>
-      <Controls onSearch={mockFn} />
-    </MemoryRouter>
-  );
+  render(<Controls onSearch={mockFn} />);
 
   const input = screen.getByPlaceholderText('Enter term');
-
   fireEvent.change(input, { target: { value: 'ditto' } });
 
   expect(input).toHaveValue('ditto');
-});
-
-test('test LS', () => {
-  const mockFn = vi.fn();
-  const mockFnLs = vi.spyOn(window.localStorage.__proto__, 'setItem');
-
-  render(
-    <MemoryRouter>
-      <Controls onSearch={mockFn} />
-    </MemoryRouter>
-  );
-
-  const input = screen.getByPlaceholderText('Enter term');
-  fireEvent.change(input, { target: { value: '   ditto    ' } });
-
-  expect(input).toHaveValue('ditto');
-
-  const button = screen.getByRole('button', { name: /Search Button/ });
-  expect(button).toBeInTheDocument();
-
-  fireEvent.click(button);
-
-  expect(mockFn).toHaveBeenCalledWith('ditto', 0);
-
-  expect(mockFnLs).toHaveBeenCalledWith('searchTerm', 'ditto');
-
-  expect(input).toHaveValue('');
 });

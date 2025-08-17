@@ -1,8 +1,11 @@
-import { render } from '@testing-library/react';
-import { test } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { test, vi } from 'vitest';
 import ItemDetails from './ItemDetails';
+import { NextIntlClientProvider } from 'next-intl';
 
-test('render Card', () => {
+const messages = { ItemDetails: { value: 'test value' } };
+
+test('render ItemDetails', () => {
   const mockData = {
     name: 'ditto',
     url: 'https://pokeapi.co/api/v2/pokemon/132/encounters',
@@ -12,5 +15,11 @@ test('render Card', () => {
     },
   };
 
-  render(<ItemDetails data={mockData} onItemDetailsClose={vi.fn()} />);
+  render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <ItemDetails data={mockData} onItemDetailsClose={vi.fn()} />
+    </NextIntlClientProvider>
+  );
+
+  expect(screen.getByText('ditto')).toBeInTheDocument();
 });

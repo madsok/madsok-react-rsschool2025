@@ -1,35 +1,55 @@
 import { render, fireEvent } from '@testing-library/react';
-import { test } from 'vitest';
+import { NextIntlClientProvider } from 'next-intl';
 import Pagination from './Pagination';
-import { MemoryRouter } from 'react-router-dom';
-import { useState } from 'react';
+import { vi } from 'vitest';
 
-function App() {
-  const [page, setPage] = useState(1);
+const pushMock = vi.fn();
 
-  return <Pagination count={132} currentPage={page} onPageChange={setPage} />;
-}
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: pushMock, replace: vi.fn() }),
+  usePathname: () => '/test',
+}));
 
-test('render Pagination', () => {
-  const { getByText, getByRole } = render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
+const messages = {
+  Pagination: {
+    prev: 'Previous',
+    next: 'Next',
+    goTo: 'Go to:',
+  },
+};
+
+test('Pagination button test', () => {
+  const onPageChange = vi.fn();
+
+  const { getByText, getByRole, rerender } = render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <Pagination count={132} currentPage={1} onPageChange={onPageChange} />
+    </NextIntlClientProvider>
   );
-  const prevButton = getByText(/Previous/);
-  const nextButton = getByText(/Next/);
-  const goToButton = getByText(/Go to:/);
-  const inputPage = getByRole('spinbutton');
 
-  expect(inputPage).toHaveValue(1);
+  const nextButton = getByText('Next');
+  const prevButton = getByText('Previous');
+  const goButton = getByText('Go to:');
+  const input = getByRole('spinbutton') as HTMLInputElement;
+
+  expect(input.value).toBe('1');
 
   fireEvent.click(nextButton);
-  expect(inputPage).toHaveValue(2);
+  expect(onPageChange).toHaveBeenCalledWith(2);
+  expect(pushMock).toHaveBeenCalledWith('/test?page=2');
+
+  rerender(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <Pagination count={132} currentPage={2} onPageChange={onPageChange} />
+    </NextIntlClientProvider>
+  );
 
   fireEvent.click(prevButton);
-  expect(inputPage).toHaveValue(1);
+  expect(onPageChange).toHaveBeenCalledWith(1);
+  expect(pushMock).toHaveBeenCalledWith('/test?page=1');
 
-  fireEvent.change(inputPage, { target: { value: '3' } });
-  fireEvent.click(goToButton);
-  expect(inputPage).toHaveValue(3);
+  fireEvent.change(input, { target: { value: '5' } });
+  fireEvent.click(goButton);
+  expect(onPageChange).toHaveBeenCalledWith(5);
+  expect(pushMock).toHaveBeenCalledWith('/test?page=5');
 });
