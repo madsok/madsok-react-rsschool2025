@@ -71,7 +71,7 @@ function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
       </li>
       <li>
         <button className="next" onClick={nextButtonHandler}>
-          {t('prev')}
+          {t('next')}
         </button>
       </li>
     </ul>
