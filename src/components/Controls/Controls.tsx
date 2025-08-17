@@ -1,9 +1,8 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import spinner from '../../assets/Loading_icon.gif';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 interface ControlsProps {
   onSearch: (term: string, offset: number) => void;
@@ -14,6 +13,7 @@ function Controls({ onSearch }: ControlsProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations('Controls');
 
   useEffect(() => {
     const searchTerm = getTermFromLocalStorage('searchTerm');
@@ -65,20 +65,20 @@ function Controls({ onSearch }: ControlsProps) {
 
   return (
     <div className="controls">
-      <h2>Top controls</h2>
+      <h2>{t('header')}</h2>
       <div className="controls-wrapper">
         <input
           className="search-field"
           type="text"
           onChange={handleSearchInput}
           value={searchValue}
-          placeholder="Enter term"
+          placeholder={t('placeholder')}
         />
         {isLoading ? (
           <Image src={spinner} alt="Loading..." width={300} height={300} />
         ) : (
           <button className="search-button" onClick={handleSearchButton}>
-            Search Button
+            {t('search')}
           </button>
         )}
       </div>

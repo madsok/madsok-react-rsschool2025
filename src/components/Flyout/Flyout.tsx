@@ -1,4 +1,5 @@
 import { useSelectedCardsStore } from '../../store/selectedCardsStore';
+import { useTranslations } from 'next-intl';
 
 function Flyout() {
   const selectedCardsTotal = useSelectedCardsStore(
@@ -7,13 +8,16 @@ function Flyout() {
   const resetSelectedCards = useSelectedCardsStore(
     (state) => state.resetSelectedCards
   );
+  const t = useTranslations('Flyout');
 
   return (
     <>
       <div>
-        <p>{selectedCardsTotal} items are selected</p>
-        <button onClick={() => resetSelectedCards()}>Unselect all</button>
-        <button>Download</button>
+        <p>
+          {selectedCardsTotal} {t('selected')}
+        </p>
+        <button onClick={() => resetSelectedCards()}>{t('unselect')}</button>
+        <button>{t('download')}</button>
       </div>
     </>
   );

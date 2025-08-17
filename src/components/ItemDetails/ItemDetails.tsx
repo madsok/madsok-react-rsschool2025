@@ -1,6 +1,7 @@
 import type I_PokemonItem from '../../interfaces/I_PokemonItem';
 import './ItemDetails.css';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 interface ItemDetailsProps {
   onItemDetailsClose: (state: boolean) => void;
@@ -8,19 +9,20 @@ interface ItemDetailsProps {
 }
 
 function ItemDetails({ data, onItemDetailsClose }: ItemDetailsProps) {
+  const t = useTranslations('Details');
   function closeButtonHandler() {
     onItemDetailsClose(false);
   }
   return (
     <>
       <div className="details-item">
-        <button onClick={closeButtonHandler}>Close</button>
+        <button onClick={closeButtonHandler}>{t('closeBtn')}</button>
         <div>
-          <h3>Item name</h3>
+          <h3>{t('itemName')}</h3>
           <p>{data.name}</p>
         </div>
         <div>
-          <h3>Item Sprite</h3>
+          <h3>{t('itemName')}</h3>
           <Image
             src={data.sprites.back_default}
             alt="pokemon sprite"

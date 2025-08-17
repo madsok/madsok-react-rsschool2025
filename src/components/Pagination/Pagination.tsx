@@ -1,6 +1,7 @@
 import './Pagination.css';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface PaginationProps {
   count: number;
@@ -13,6 +14,7 @@ function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
   const [inputNumber, setInputNumber] = useState<string>('1');
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations('Pagination');
 
   useEffect(() => {
     setInputNumber(String(currentPage));
@@ -54,11 +56,11 @@ function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
     <ul className="pagination">
       <li className="pagination-item">
         <button className="prev" onClick={prevButtonHandler}>
-          Previous
+          {t('prev')}
         </button>
       </li>
       <li>
-        <button onClick={goToButtonHandler}>Go to: </button>
+        <button onClick={goToButtonHandler}>{t('goTo')}</button>
         <input
           type="number"
           min="1"
@@ -69,7 +71,7 @@ function Pagination({ count, onPageChange, currentPage }: PaginationProps) {
       </li>
       <li>
         <button className="next" onClick={nextButtonHandler}>
-          Next
+          {t('prev')}
         </button>
       </li>
     </ul>

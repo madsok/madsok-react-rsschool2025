@@ -2,21 +2,23 @@
 
 import './App.css';
 import { useState } from 'react';
-import Controls from '../components/Controls/Controls';
-import Results from '../components/Results/Results';
-import ErrorButton from '../components/ErrorButton/ErrorButton';
-import type I_PokemonData from '../interfaces/I_PokemonData';
-import sendRequest from '../services/sendRequest';
+import Controls from '../../components/Controls/Controls';
+import Results from '../../components/Results/Results';
+import type I_PokemonData from '../../interfaces/I_PokemonData';
+import sendRequest from '../../services/sendRequest';
 import { useQuery } from '@tanstack/react-query';
-import spinner from '../assets/Loading_icon.gif';
-import ClearCacheButton from '../components/ClearCacheButton/ClearCacheButton';
+import spinner from '../../assets/Loading_icon.gif';
+import ClearCacheButton from '../../components/ClearCacheButton/ClearCacheButton';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import LangSwitcher from '../../components/LangSwitcher/LangSwitcher';
 
 function App() {
   const [searchValue, setSearchValue] = useState<string>('');
   const [page, setPage] = useState(1);
   const offset = (page - 1) * 5;
+  const t = useTranslations('App');
 
   const query = useQuery({
     queryKey: ['dataRequest', searchValue, offset],
@@ -34,15 +36,15 @@ function App() {
 
   return (
     <>
+      <LangSwitcher />
       <ClearCacheButton />
-      <ErrorButton />
-      <Link href="/about">About page</Link>
+      <Link href="/about">{t('about')}</Link>
       <Controls onSearch={handleSearch} />
       {query.isLoading || (query.isFetching && !query.data) ? (
-        <Image src={spinner} alt="Loading..." width={300} height={300} />
+        <Image src={spinner} alt={t('loading')} width={300} height={300} />
       ) : query.isError ? (
         <p>
-          Data loading error:{' '}
+          {t('dataError')}{' '}
           {query.error instanceof Error ? query.error.message : 'Unknown error'}
         </p>
       ) : (
